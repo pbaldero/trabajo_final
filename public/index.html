@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Base de Datos</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .query-container {
+            flex: 1;
+            margin-right: 20px;
+        }
+        .result-container {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Consulta de Base de Datos</h1>
+    <div class="container">
+        <div class="query-container">
+            <h2>Consultas SQL</h2>
+            <textarea id="consulta" rows="4" cols="50" placeholder="Escribe tu consulta SQL aquí"></textarea>
+            <br>
+            <button id="enviarConsulta">Enviar Consulta</button>
+        </div>
+        <div class="result-container">
+            <h2>Resultados</h2>
+            <div id="resultados"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('enviarConsulta').addEventListener('click', () => {
+            const consulta = document.getElementById('consulta').value;
+            fetch('/consulta', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ query: consulta })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultadosDiv = document.getElementById('resultados');
+                resultadosDiv.innerHTML = ''; // Limpiar resultados anteriores
+                data.forEach(row => {
+                    const rowDiv = document.createElement('div');
+                    rowDiv.textContent = JSON.stringify(row);
+                    resultadosDiv.appendChild(rowDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const resultadosDiv = document.getElementById('resultados');
+                resultadosDiv.innerHTML = 'Error en la consulta';
+            });
+        });
+    </script>
+</body>
+</html>

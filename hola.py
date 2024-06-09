@@ -1,5 +1,0 @@
-kvkdjfmkofvmkdfmkdffvpkvvç
-pmvemkfdvmkmk
-ellelele
-eeeeeee
-ee
